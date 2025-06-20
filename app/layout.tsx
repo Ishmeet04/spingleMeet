@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import {Inter} from "next/font/google";
 import "./globals.css";
 import { ClerkProvider,SignInButton,SignIn,SignedIn,SignedOut,UserButton,ClerkLoaded } from "@clerk/nextjs";
-
+import { Toaster } from "@/components/ui/toaster"
 
 const inter =Inter({ subsets: ["latin"]});
 const geistSans = Geist({
@@ -46,6 +46,7 @@ export default function RootLayout({
       >
       <body className={`${inter.className} bg-dark-2 ${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
+        <Toaster />
       </body>
       </ClerkProvider>
     </html>
