@@ -5,10 +5,16 @@ import MeetingSetup from '@/components/ui/ui/MeetingSetup';
 import { useGetCallById } from '@/hooks/useGetCallById';
 import { useUser } from '@clerk/nextjs'
 import { StreamCall, StreamTheme } from '@stream-io/video-react-sdk';
-import { useState } from 'react';
+import { useState, use } from 'react';
 
 
-const Meeting = ({params: {id}} : {params: {id: string}}) => {
+// const Meeting = ({params: {id}} : {params: {id: string}}) => {
+interface MeetingProps {
+  params: Promise<{ id: string }> // ✅ Updated type to match new behavior
+}
+
+const Meeting = ({ params }: MeetingProps) => {
+  const { id } = use(params);
   const {user, isLoaded} =useUser();
   const [isSetupComplete, setisSetupComplete] = useState(false)
   const {call, isCallLoading} = useGetCallById(id);
@@ -19,7 +25,7 @@ const Meeting = ({params: {id}} : {params: {id: string}}) => {
       <StreamCall call={call}>
         <StreamTheme>
           {!isSetupComplete ? (
-            <MeetingSetup/>
+            <MeetingSetup setisSetupComplete={setisSetupComplete} />
           ): (
             <MeetingRoom/>
           )}

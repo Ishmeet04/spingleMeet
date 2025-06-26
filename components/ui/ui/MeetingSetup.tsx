@@ -4,7 +4,8 @@ import { on } from 'events'
 import React, { useEffect, useState } from 'react'
 import { Button } from './button';
 
-const MeetingSetup = () => {
+const MeetingSetup = ({setisSetupComplete}:{
+    setisSetupComplete: (value : boolean)=>void}) => {
     const [isMicCamToggledOn, setisMicCamToggledOn] = useState(false)
     const call = useCall();
     
@@ -21,6 +22,12 @@ const MeetingSetup = () => {
         call?.camera.enable();
         call?.microphone.enable();
      }
+     return () => {
+      // ✅ Cleanup on unmount to stop local media
+      call?.camera.disable();
+      call?.microphone.disable();
+    //   call?.leave(); // Optional: only if leaving on unmount
+    };
 
     }, [isMicCamToggledOn, call?.camera, call?.microphone])
     
@@ -37,8 +44,16 @@ const MeetingSetup = () => {
             </label>
             <DeviceSettings />
         </div>
-        <Button className='rounded-md bg-green-500 px-4 py-2.5'>
-            Join Meeting
+        <Button className='rounded-md bg-green-500 px-4 py-2.5' onClick={async()=>{
+                await call.join();
+                if (isMicCamToggledOn) {
+           // ✅ Disable again after join to stop publishing tracks
+                   await call.camera.disable();
+                   await call.microphone.disable();
+                }
+                setisSetupComplete(true);
+            }}>
+            Join Meeting 
         </Button>
     </div>
   )
