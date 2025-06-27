@@ -5,16 +5,14 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { LayoutList, Search, Users} from 'lucide-react'
+import { LayoutList, Users} from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import EndCallButton from './EndCallButton'
 import Loader from './Loader'
 import { useRouter } from 'next/navigation'
-import { comment } from 'postcss'
 
 
 type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right'
@@ -91,4 +89,3 @@ const MeetingRoom = () => {
 
 export default MeetingRoom
 
-//comment
